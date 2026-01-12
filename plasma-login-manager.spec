@@ -9,7 +9,7 @@
 
 Name:           plasma-login-manager
 Version:        0.21.0%{?commitdate:~git%{gititer}.%{commitdate}.%{shortcommit}}
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        BSD-3-Clause and CC0-1.0 and (GPL-2.0-only or GPL-3.0-only) and GPL-2.0-or-later and LGPL-2.0-or-later and LGPL-2.1-or-later
 Summary:        QML based login manager from KDE
 
@@ -31,6 +31,10 @@ Source12:       plasmalogin.sysusers
 Source13:       plasmalogin.conf
 
 # upstream patches
+
+# proposed patches
+## fix to make the KCM not break the wallpaper config
+Patch0101:      https://invent.kde.org/plasma/plasma-login-manager/-/commit/c5ddc7d6da9733ee471b4287092cb05108a0fb73.patch
 
 # downstream patches
 ## plasmalogin.service: +EnvironmentFile=-/etc/sysconfig/plasmalogin
@@ -216,6 +220,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/kcm_plasmalogin.desk
 
 
 %changelog
+* Mon Jan 12 2026 Neal Gompa <ngompa@fedoraproject.org> - 0.21.0~git1.20260112.c96b194-3
+- Add WIP fix to avoid KCM breaking wallpaper settings
+
 * Mon Jan 12 2026 Neal Gompa <ngompa@fedoraproject.org> - 0.21.0~git1.20260112.c96b194-2
 - Fix install path for main config file
 
