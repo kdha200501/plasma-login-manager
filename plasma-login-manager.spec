@@ -9,7 +9,7 @@
 
 Name:           plasma-login-manager
 Version:        0.21.0%{?commitdate:~git%{gititer}.%{commitdate}.%{shortcommit}}
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD-3-Clause and CC0-1.0 and (GPL-2.0-only or GPL-3.0-only) and GPL-2.0-or-later and LGPL-2.0-or-later and LGPL-2.1-or-later
 Summary:        QML based login manager from KDE
 
@@ -31,6 +31,8 @@ Source12:       plasmalogin.sysusers
 Source13:       plasma-login.conf
 
 # upstream patches
+## Fix loading defaults config
+Patch0101:      https://invent.kde.org/plasma/plasma-login-manager/-/merge_requests/58.patch
 
 # downstream patches
 ## plasmalogin.service: +EnvironmentFile=-/etc/sysconfig/plasmalogin
@@ -218,6 +220,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/kcm_plasmalogin.desk
 
 
 %changelog
+* Sun Jan 11 2026 Neal Gompa <ngompa@fedoraproject.org> - 0.21.0~git1.20260111.99ded95-2
+- Add patch to read default wallpaper settings
+
 * Sun Jan 11 2026 Neal Gompa <ngompa@fedoraproject.org> - 0.21.0~git1.20260111.99ded95-1
 - Bump to new git snapshot
 

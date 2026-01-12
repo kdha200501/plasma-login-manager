@@ -1,0 +1,26 @@
+From 9b609a592bea1829f081a0528d017b694b4061a1 Mon Sep 17 00:00:00 2001
+From: Oliver Beard <olib141@outlook.com>
+Date: Sun, 11 Jan 2026 23:02:05 +0000
+Subject: [PATCH] frontend/settings: Add default config as source for
+ PlasmaLoginSettings
+
+This allows default wallpaper configuration to be picked up, which is not declaratively defined in kcfg.
+---
+ src/frontend/settings/plasmaloginsettings.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/frontend/settings/plasmaloginsettings.cpp b/src/frontend/settings/plasmaloginsettings.cpp
+index 585c50e5..5407fbf1 100644
+--- a/src/frontend/settings/plasmaloginsettings.cpp
++++ b/src/frontend/settings/plasmaloginsettings.cpp
+@@ -23,6 +23,7 @@
+ PlasmaLoginSettings &PlasmaLoginSettings::getInstance()
+ {
+     auto config = KSharedConfig::openConfig(QStringLiteral(PLASMALOGIN_CONFIG_FILE), KConfig::CascadeConfig);
++    config->addConfigSources({QStringLiteral(PLASMALOGIN_SYSTEM_CONFIG_FILE)});
+ 
+     static PlasmaLoginSettings instance(config);
+     return instance;
+-- 
+GitLab
+
