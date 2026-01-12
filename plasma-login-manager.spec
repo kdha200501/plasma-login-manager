@@ -9,7 +9,7 @@
 
 Name:           plasma-login-manager
 Version:        0.21.0%{?commitdate:~git%{gititer}.%{commitdate}.%{shortcommit}}
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD-3-Clause and CC0-1.0 and (GPL-2.0-only or GPL-3.0-only) and GPL-2.0-or-later and LGPL-2.0-or-later and LGPL-2.1-or-later
 Summary:        QML based login manager from KDE
 
@@ -137,7 +137,7 @@ mkdir -p %{buildroot}%{_prefix}/lib/plasmalogin/plasmalogin.conf.d
 
 install -Dpm 644 %{SOURCE10} %{buildroot}%{_datadir}/plasmalogin/scripts/README.scripts
 install -Dpm 644 %{SOURCE11} %{buildroot}%{_sysconfdir}/sysconfig/plasmalogin
-install -Dpm 644 %{SOURCE13} %{buildroot}%{_sysconfdir}/plasma-login.conf
+install -Dpm 644 %{SOURCE13} %{buildroot}%{_sysconfdir}/plasmalogin.conf
 
 mkdir -p %{buildroot}/run/plasmalogin
 mkdir -p %{buildroot}%{_localstatedir}/lib/plasmalogin
@@ -183,7 +183,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/kcm_plasmalogin.desk
 %dir %{_prefix}/lib/plasmalogin
 %dir %{_prefix}/lib/plasmalogin/plasmalogin.conf.d
 %config(noreplace) %{_sysconfdir}/plasmalogin/*
-%config(noreplace) %{_sysconfdir}/plasma-login.conf
+%config(noreplace) %{_sysconfdir}/plasmalogin.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/plasmalogin
 %{_prefix}/lib/pam.d/plasmalogin*
 %{_datadir}/dbus-1/system.d/org.freedesktop.DisplayManager-plasmalogin.conf
@@ -216,6 +216,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/kcm_plasmalogin.desk
 
 
 %changelog
+* Mon Jan 12 2026 Neal Gompa <ngompa@fedoraproject.org> - 0.21.0~git1.20260112.c96b194-2
+- Fix install path for main config file
+
 * Mon Jan 12 2026 Neal Gompa <ngompa@fedoraproject.org> - 0.21.0~git1.20260112.c96b194-1
 - Bump to new git snapshot
 - Drop merged patch
