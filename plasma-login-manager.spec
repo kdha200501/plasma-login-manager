@@ -78,6 +78,8 @@ BuildRequires:  cmake(KF6KirigamiPlatform)
 BuildRequires:  cmake(PlasmaQuick)
 BuildRequires:  cmake(LayerShellQt)
 BuildRequires:  cmake(LibKWorkspace)
+BuildRequires:  cmake(LibKLookAndFeel)
+BuildRequires:  cmake(KF6Screen)
 # verify presence to pull defaults from /etc/login.defs
 BuildRequires:  shadow-utils
 BuildRequires:  systemd
