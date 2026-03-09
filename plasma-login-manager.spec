@@ -5,7 +5,7 @@
 %global shortcommit %{sub %{commit} 1 7}
 %global commitdate 20260112
 %global gititer 1
-
+%global debug_package %{nil}
 
 Name:           plasma-login-manager
 Version:        6.6.3
@@ -39,6 +39,8 @@ Source13:       plasmalogin.conf
 Patch1001:      plasmalogin-environment_file.patch
 ## Workaround for https://pagure.io/fedora-kde/SIG/issue/87
 Patch1002:      plasmalogin-rpmostree-tmpfiles-hack.patch
+## Only display in the primary screen
+Patch2001:      jacks-cusomizations-primary-screen-only.patch
 
 Provides:       service(graphical-login) = plasmalogin
 

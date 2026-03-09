@@ -1,0 +1,24 @@
+Subject: [PATCH] show greeter in primary sceen, only
+---
+Index: src/frontend/greeter/main.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/frontend/greeter/main.cpp b/src/frontend/greeter/main.cpp
+--- a/src/frontend/greeter/main.cpp	(revision 91c9a232d151444832b07d8ae6c5b0d5268886f8)
++++ b/src/frontend/greeter/main.cpp	(revision 12c56557797fd84ff01d96a28064a8e81478a4f0)
+@@ -34,12 +34,7 @@
+     explicit LoginGreeter(QObject *parent = nullptr)
+         : QObject(parent)
+     {
+-        connect(qApp, &QGuiApplication::screenAdded, this, [this](QScreen *screen) {
+-            createWindowForScreen(screen);
+-        });
+-        for (QScreen *screen : qApp->screens()) {
+-            createWindowForScreen(screen);
+-        }
++        createWindowForScreen(qApp->primaryScreen());
+     }
+     static void setTestModeEnabled(bool testModeEnabled);
+     static bool testModeEnabled();
