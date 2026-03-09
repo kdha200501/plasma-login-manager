@@ -5,7 +5,7 @@
 %global shortcommit %{sub %{commit} 1 7}
 %global commitdate 20260112
 %global gititer 1
-
+%global debug_package %{nil}
 
 Name:           plasma-login-manager
 Version:        6.6.5
@@ -41,6 +41,8 @@ Patch0001:	Fix-launch-when-kmscon-is-used.patch
 Patch1001:      plasmalogin-environment_file.patch
 ## Workaround for https://pagure.io/fedora-kde/SIG/issue/87
 Patch1002:      plasmalogin-rpmostree-tmpfiles-hack.patch
+## Only display in the primary screen
+Patch2001:      jacks-cusomizations-primary-screen-only.patch
 
 Provides:       service(graphical-login) = plasmalogin
 
