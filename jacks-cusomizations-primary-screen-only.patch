@@ -1,0 +1,24 @@
+Subject: [PATCH] show greeter in primary sceen, only
+---
+Index: src/frontend/greeter/main.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/frontend/greeter/main.cpp b/src/frontend/greeter/main.cpp
+--- a/src/frontend/greeter/main.cpp
++++ b/src/frontend/greeter/main.cpp
+@@ -36,12 +36,7 @@
+         : QObject(parent)
+         , m_engine(new PlasmaQuick::SharedQmlEngine)
+     {
+-        connect(qApp, &QGuiApplication::screenAdded, this, [this](QScreen *screen) {
+-            createWindowForScreen(screen);
+-        });
+-        for (QScreen *screen : qApp->screens()) {
+-            createWindowForScreen(screen);
+-        }
++        createWindowForScreen(qApp->primaryScreen());
+     }
+     static void setTestModeEnabled(bool testModeEnabled);
+     static bool testModeEnabled();

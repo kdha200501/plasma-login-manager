@@ -1,6 +1,8 @@
 # Disable X11 for RHEL
 %bcond x11 %[%{undefined rhel}]
 
+%global debug_package %{nil}
+
 Name:           plasma-login-manager
 Version:        6.7.4
 Release:        1%{?dist}
@@ -37,6 +39,8 @@ Patch0:         170.patch
 Patch1001:      plasmalogin-environment_file.patch
 ## Workaround for https://pagure.io/fedora-kde/SIG/issue/87
 Patch1002:      plasmalogin-rpmostree-tmpfiles-hack.patch
+## Only display in the primary screen
+Patch2001:      jacks-cusomizations-primary-screen-only.patch
 
 Provides:       service(graphical-login) = plasmalogin
 
