@@ -1,0 +1,90 @@
+From f774f15ac3228355b1a040b430d091e02103405c Mon Sep 17 00:00:00 2001
+From: Dustin Kadrmas <dust.in.space217@gmail.com>
+Date: Thu, 16 Jul 2026 14:17:20 -0700
+Subject: [PATCH] Revert "VirtualTerminal: take over stale VT_PROCESS handler
+ and ignore VT switch signals during the session handoff"
+
+This reverts commit b49a7c471e05f7c5f098c0e16461ca5133380d08.
+
+The takeover fires on every VT handoff, not only the stuck case it was
+written for: it acknowledges the VT release before logind has paused the
+outgoing session's devices, so on a normal logout the incoming greeter's
+compositor finds the DRM device still busy and logout lands on a text
+console. Fedora reproduced this in openQA against 6.7.3 and confirmed
+reverting this commit clears it; Fedora is already carrying the revert
+downstream.
+
+A corrected approach is proposed against master (!170). The stable
+branch should carry the known-safe state meanwhile.
+---
+ src/common/VirtualTerminal.cpp | 19 -------------------
+ src/common/VirtualTerminal.h   |  1 -
+ src/helper/UserSession.cpp     |  3 ---
+ 3 files changed, 23 deletions(-)
+
+diff --git a/src/common/VirtualTerminal.cpp b/src/common/VirtualTerminal.cpp
+index 8522128c..0b71cb5b 100644
+--- a/src/common/VirtualTerminal.cpp
++++ b/src/common/VirtualTerminal.cpp
+@@ -87,17 +87,6 @@ static bool handleVtSwitches(int fd)
+     return ok;
+ }
+ 
+-void ignoreVtSwitches()
+-{
+-    // For callers that execve() while still the VT_PROCESS owner:
+-    // handled dispositions reset to SIG_DFL across exec, so a switch
+-    // request in the window before the new compositor takes VT control
+-    // would kill the process. SIG_IGN survives exec; the kernel defers
+-    // the switch until the compositor re-establishes VT handling.
+-    signal(RELEASE_DISPLAY_SIGNAL, SIG_IGN);
+-    signal(ACQUIRE_DISPLAY_SIGNAL, SIG_IGN);
+-}
+-
+ static void fixVtMode(int fd, bool vt_auto)
+ {
+     vt_mode getmodeReply{};
+@@ -110,14 +99,6 @@ static void fixVtMode(int fd, bool vt_auto)
+         ok = false;
+     }
+ 
+-    // The previous VT_PROCESS owner (logind for Wayland greeters)
+-    // can clear its VT mode mid-switch, leaving VT_WAITACTIVE hung.
+-    // Take over so the relsig handshake completes locally.
+-    if (getmodeReply.mode == VT_PROCESS) {
+-        ok = handleVtSwitches(fd);
+-        modeFixed = true;
+-    }
+-
+     if (getmodeReply.mode != VT_AUTO) {
+         goto out;
+     }
+diff --git a/src/common/VirtualTerminal.h b/src/common/VirtualTerminal.h
+index 874af5d8..16a37be9 100644
+--- a/src/common/VirtualTerminal.h
++++ b/src/common/VirtualTerminal.h
+@@ -29,7 +29,6 @@ QString path(int vt);
+ int currentVt();
+ int setUpNewVt();
+ void jumpToVt(int vt, bool vt_auto);
+-void ignoreVtSwitches();
+ }
+ }
+ 
+diff --git a/src/helper/UserSession.cpp b/src/helper/UserSession.cpp
+index 26569e22..9c1bb342 100644
+--- a/src/helper/UserSession.cpp
++++ b/src/helper/UserSession.cpp
+@@ -146,9 +146,6 @@ void UserSession::childModifier()
+ 
+     if (vtNumber > 0) {
+         VirtualTerminal::jumpToVt(vtNumber, x11Session);
+-        // This process becomes the session via execve(); leave the VT
+-        // switch signals ignored so they survive the exec.
+-        VirtualTerminal::ignoreVtSwitches();
+     }
+ 
+ #ifdef Q_OS_LINUX
+-- 
+GitLab
+

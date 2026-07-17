@@ -3,7 +3,7 @@
 
 Name:           plasma-login-manager
 Version:        6.7.3
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        BSD-3-Clause and CC0-1.0 and (GPL-2.0-only or GPL-3.0-only) and GPL-2.0-or-later and LGPL-2.0-or-later and LGPL-2.1-or-later
 Summary:        QML based login manager from KDE
 
@@ -25,6 +25,10 @@ Source12:       plasmalogin.sysusers
 Source13:       plasmalogin.conf
 
 # upstream patches
+
+# Revert "VirtualTerminal: take over stale VT_PROCESS handler and ignore VT switch signals during the session handoff"
+# https://invent.kde.org/plasma/plasma-login-manager/-/merge_requests/171
+Patch0:         171.patch
 
 # proposed patches
 
@@ -215,6 +219,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/kcm_plasmalogin.desk
 
 
 %changelog
+* Fri Jul 17 2026 Steve Cossette <farchord@gmail.com> - 6.7.3-3
+- Fix for issue where logging out drops you into tty
+
 * Thu Jul 16 2026 Fedora Release Engineering <releng@fedoraproject.org> - 6.7.3-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_45_Mass_Rebuild
 
