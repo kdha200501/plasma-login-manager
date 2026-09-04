@@ -1,0 +1,11 @@
+# Installed by plasma-login-manager (jacks-customizations) to
+# /var/lib/plasmalogin/.config/plasmarc
+#
+# The plasmalogin greeter runs as the dedicated "plasmalogin" system
+# account, which has no desktop theme configured out of the box. Without
+# this file, Plasma::Theme falls back to its compiled-in default theme
+# ("default", i.e. plain Breeze) instead of "breeze-dark" - meaning the
+# jacks-customizations purple desktoptheme assets shipped by libplasma
+# never actually get loaded by the greeter.
+[Theme]
+name=breeze-dark
