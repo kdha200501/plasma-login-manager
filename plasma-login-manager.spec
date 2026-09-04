@@ -25,6 +25,10 @@ Source11:       plasmalogin.sysconfig
 Source12:       plasmalogin.sysusers
 # sample plasmalogin.conf generated with plasmalogin --example-config, and entries commented-out
 Source13:       plasmalogin.conf
+# jacks-customizations: force the greeter's Plasma desktop theme to
+# breeze-dark (otherwise it silently falls back to plain Breeze, since the
+# plasmalogin account has no plasmarc of its own by default)
+Source14:       jacks-customizations-plasmarc
 
 # upstream patches
 
@@ -149,6 +153,9 @@ install -Dpm 644 %{SOURCE13} %{buildroot}%{_sysconfdir}/plasmalogin.conf
 mkdir -p %{buildroot}/run/plasmalogin
 mkdir -p %{buildroot}%{_localstatedir}/lib/plasmalogin
 mkdir -p %{buildroot}%{_sysconfdir}/plasmalogin/
+
+# jacks-customizations: force breeze-dark as the greeter's Plasma theme
+install -Dpm 644 %{SOURCE14} %{buildroot}%{_localstatedir}/lib/plasmalogin/.config/plasmarc
 cp -a %{buildroot}%{_datadir}/plasmalogin/scripts/* \
       %{buildroot}%{_sysconfdir}/plasmalogin/
 # we're using /etc/X11/xinit/Xsession (by default) instead
@@ -204,6 +211,8 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/kcm_plasmalogin.desk
 %{_sysusersdir}/plasmalogin.conf
 %attr(0711, root, plasmalogin) %dir /run/plasmalogin
 %attr(1770, plasmalogin, plasmalogin) %dir %{_localstatedir}/lib/plasmalogin
+%attr(0700, plasmalogin, plasmalogin) %dir %{_localstatedir}/lib/plasmalogin/.config
+%attr(0644, plasmalogin, plasmalogin) %config(noreplace) %{_localstatedir}/lib/plasmalogin/.config/plasmarc
 %{_unitdir}/plasmalogin.service
 %{_userunitdir}/plasma-login.service
 %{_userunitdir}/plasma-login-kwin_wayland.service
