@@ -27,10 +27,14 @@ Source13:       plasmalogin.conf
 # upstream patches
 
 # VirtualTerminal: replace unconditional VT takeover with a bounded wait
-Patch0:         https://invent.kde.org/plasma/plasma-login-manager/-/merge_requests/170.patch
+# NOTE: vendored locally (rather than fetched live from the mutable MR URL)
+# because merge_requests/170.patch tracks the MR's current HEAD and changes
+# whenever upstream pushes new commits, which can silently break %prep.
+Patch0:         170.patch
 
 # Add support for unlocking oo7 wallets on login
-Patch1:         https://invent.kde.org/plasma/plasma-login-manager/-/merge_requests/200.patch
+# NOTE: vendored locally for the same reason as Patch0.
+Patch1:         200.patch
 
 # proposed patches
 
